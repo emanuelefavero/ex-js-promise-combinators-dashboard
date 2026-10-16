@@ -1,0 +1,13 @@
+{
+  "name": "ex-js-promise-combinators-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "soluzioni.js",
+  "scripts": {
+    "dev": "node --watch ."
+  },
+  "keywords": [],
+  "author": "Emanuele Favero <emafaux89@gmail.com> (https://emanuelefavero.com/)",
+  "license": "MIT",
+  "type": "module"
+}

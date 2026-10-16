@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:3333
+@city = london
+
+### GET Destination by City
+GET {{baseUrl}}/destinations?search={{city}}
+# Response [{ name, country }]
+
+### GET Weather by City
+
+GET {{baseUrl}}/weathers?search={{city}}
+# Response [{ temperature, weather_description }]
+
+### GET Airport by City
+GET {{baseUrl}}/airports?search={{city}}
+# Response [{ name }]
