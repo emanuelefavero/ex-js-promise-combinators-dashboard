@@ -10,8 +10,11 @@ const RESOURCES = Object.freeze({
 const CITY = 'london';
 
 // Utils
-// TODO handle search parameters in the URL
-const url = (...args) => [BASE_URL, ...args].join('/');
+const url = (path, params) => {
+  const endpoint = [BASE_URL, ...path].join('/');
+  const query = new URLSearchParams(params).toString();
+  return query ? `${endpoint}?${query}` : endpoint;
+};
 
 const fetchJson = async url => {
   const response = await fetch(url);
@@ -24,7 +27,23 @@ const fetchJson = async url => {
 
 // Exercise
 const getDashboardData = async query => {
-  // TODO exercise
+  const [[destination], [weather], [airport]] = await Promise.all([
+    fetchJson(url([RESOURCES.destinations], { search: CITY })),
+    fetchJson(url([RESOURCES.weathers], { search: CITY })),
+    fetchJson(url([RESOURCES.airports], { search: CITY })),
+  ]);
+
+  if (!destination) throw new Error(`Destination not found for city: ${CITY}`);
+  if (!weather) throw new Error(`Weather not found for city: ${CITY}`);
+  if (!airport) throw new Error(`Airport not found for city: ${CITY}`);
+
+  return {
+    city: destination.name,
+    country: destination.country,
+    temperature: weather.temperature,
+    weather: weather.weather_description,
+    airport: airport.name,
+  };
 };
 
 // Run
