@@ -28,12 +28,10 @@ const getDashboardData = async search => {
   );
 
   const [destination, weather, airport] = results.map((result, index) => {
-    if (result.status === 'rejected') {
+    if (result.status === 'rejected')
       console.error(`Failed to fetch ${RESOURCES[index]}:`, result.reason);
-      return null;
-    }
 
-    return result.value[0] ?? null;
+    return result.value?.[0] ?? null;
   });
 
   return {
