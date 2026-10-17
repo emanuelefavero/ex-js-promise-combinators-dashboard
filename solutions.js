@@ -33,7 +33,7 @@ const getDashboardData = async search => {
     fetchJson(url([RESOURCES.airports], { search })),
   ]);
 
-  if (!destination) throw new Error(`${CITY} not found`);
+  if (!destination) throw new Error(`${search} not found`);
 
   return {
     city: destination.name,
@@ -48,12 +48,20 @@ const getDashboardData = async search => {
 const main = async () => {
   try {
     const data = await getDashboardData(CITY);
-    console.log('Dashboard data:', data);
-    console.log(
-      `${data.city} is in ${data.country}.\n` +
-        `Today there are ${data.temperature} degrees and the weather is ${data.weather}.\n` +
-        `The main airport is ${data.airport}.\n`,
-    );
+
+    // console.log('Dashboard data:', data); // Debug
+
+    const messages = [
+      `${data.city} is in ${data.country}.`, // City
+
+      data.temperature != null &&
+        data.weather != null &&
+        `Today there are ${data.temperature} degrees and the weather is ${data.weather}.`, // Weather
+
+      data.airport && `The main airport is ${data.airport}.`, // Airport
+    ];
+
+    console.log(messages.filter(Boolean).join('\n'));
   } catch (error) {
     console.error('Error:', error.message);
   }
