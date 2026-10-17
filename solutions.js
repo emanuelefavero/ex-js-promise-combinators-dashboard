@@ -26,16 +26,14 @@ const fetchJson = async url => {
 };
 
 // Exercise
-const getDashboardData = async query => {
+const getDashboardData = async search => {
   const [[destination], [weather], [airport]] = await Promise.all([
-    fetchJson(url([RESOURCES.destinations], { search: CITY })),
-    fetchJson(url([RESOURCES.weathers], { search: CITY })),
-    fetchJson(url([RESOURCES.airports], { search: CITY })),
+    fetchJson(url([RESOURCES.destinations], { search })),
+    fetchJson(url([RESOURCES.weathers], { search })),
+    fetchJson(url([RESOURCES.airports], { search })),
   ]);
 
-  if (!destination) throw new Error(`Destination not found for city: ${CITY}`);
-  if (!weather) throw new Error(`Weather not found for city: ${CITY}`);
-  if (!airport) throw new Error(`Airport not found for city: ${CITY}`);
+  if (!destination) throw new Error(`${CITY} not found`);
 
   return {
     city: destination.name,
