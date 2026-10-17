@@ -27,11 +27,11 @@ const fetchJson = async url => {
 
 // Exercise
 const getDashboardData = async search => {
-  const [[destination], [weather], [airport]] = await Promise.all([
-    fetchJson(url([RESOURCES.destinations], { search })),
-    fetchJson(url([RESOURCES.weathers], { search })),
-    fetchJson(url([RESOURCES.airports], { search })),
-  ]);
+  const resources = Object.values(RESOURCES);
+
+  const [[destination], [weather], [airport]] = await Promise.all(
+    resources.map(resource => fetchJson(url([resource], { search }))),
+  );
 
   if (!destination) throw new Error(`${search} not found`);
 
