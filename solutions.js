@@ -38,9 +38,9 @@ const getDashboardData = async search => {
   return {
     city: destination.name,
     country: destination.country,
-    temperature: weather.temperature,
-    weather: weather.weather_description,
-    airport: airport.name,
+    temperature: weather?.temperature ?? null,
+    weather: weather?.weather_description ?? null,
+    airport: airport?.name ?? null,
   };
 };
 
