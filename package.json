@@ -2,7 +2,7 @@
   "name": "ex-js-promise-combinators-dashboard",
   "version": "1.0.0",
   "description": "",
-  "main": "soluzioni.js",
+  "main": "solutions.js",
   "scripts": {
     "dev": "node --watch ."
   },
