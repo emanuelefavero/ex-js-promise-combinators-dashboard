@@ -29,15 +29,22 @@ const fetchJson = async url => {
 const getDashboardData = async search => {
   const resources = Object.values(RESOURCES);
 
-  const [[destination], [weather], [airport]] = await Promise.all(
+  const results = await Promise.allSettled(
     resources.map(resource => fetchJson(url([resource], { search }))),
   );
 
-  if (!destination) throw new Error(`${search} not found`);
+  const [destination, weather, airport] = results.map((result, index) => {
+    if (result.status === 'rejected') {
+      console.error(`Failed to fetch ${resources[index]}:`, result.reason);
+      return null;
+    }
+
+    return result.value[0] ?? null;
+  });
 
   return {
-    city: destination.name,
-    country: destination.country,
+    city: destination?.name ?? null,
+    country: destination?.country ?? null,
     temperature: weather?.temperature ?? null,
     weather: weather?.weather_description ?? null,
     airport: airport?.name ?? null,
@@ -52,13 +59,13 @@ const main = async () => {
     // console.log('Dashboard data:', data); // Debug
 
     const messages = [
-      `${data.city} is in ${data.country}.`, // City
+      data.city && data.country && `${data.city} is in ${data.country}.`,
 
       data.temperature != null &&
         data.weather != null &&
-        `Today there are ${data.temperature} degrees and the weather is ${data.weather}.`, // Weather
+        `Today there are ${data.temperature} degrees and the weather is ${data.weather}.`,
 
-      data.airport && `The main airport is ${data.airport}.`, // Airport
+      data.airport && `The main airport is ${data.airport}.`,
     ];
 
     console.log(messages.filter(Boolean).join('\n'));
