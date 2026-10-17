@@ -2,11 +2,7 @@
 
 // Config
 const BASE_URL = 'http://localhost:3333';
-const RESOURCES = Object.freeze({
-  destinations: 'destinations',
-  weathers: 'weathers',
-  airports: 'airports',
-});
+const RESOURCES = Object.freeze(['destinations', 'weathers', 'airports']);
 const CITY = 'london';
 
 // Utils
@@ -27,15 +23,13 @@ const fetchJson = async url => {
 
 // Exercise
 const getDashboardData = async search => {
-  const resources = Object.values(RESOURCES);
-
   const results = await Promise.allSettled(
-    resources.map(resource => fetchJson(url([resource], { search }))),
+    RESOURCES.map(resource => fetchJson(url([resource], { search }))),
   );
 
   const [destination, weather, airport] = results.map((result, index) => {
     if (result.status === 'rejected') {
-      console.error(`Failed to fetch ${resources[index]}:`, result.reason);
+      console.error(`Failed to fetch ${RESOURCES[index]}:`, result.reason);
       return null;
     }
 
