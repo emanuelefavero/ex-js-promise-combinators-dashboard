@@ -2,15 +2,8 @@
 
 // Config
 const BASE_URL = 'http://localhost:3333';
-const RESOURCES = Object.freeze(['destinations', 'weathers', 'airports']);
+const RESOURCES = ['destinations', 'weathers', 'airports'];
 const CITY = 'london'; // Change to "vienna" to test partial data
-
-// Utils
-const buildUrl = (path, params) => {
-  const endpoint = [BASE_URL, ...path].join('/');
-  const query = new URLSearchParams(params).toString();
-  return query ? `${endpoint}?${query}` : endpoint;
-};
 
 const fetchJson = async url => {
   const response = await fetch(url);
@@ -18,13 +11,15 @@ const fetchJson = async url => {
   if (!response.ok)
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
-  return await response.json();
+  return response.json();
 };
 
 // Exercise
-const getDashboardData = async search => {
+const getDashboardData = async query => {
   const results = await Promise.allSettled(
-    RESOURCES.map(resource => fetchJson(buildUrl([resource], { search }))),
+    RESOURCES.map(resource =>
+      fetchJson(`${BASE_URL}/${resource}?search=${query}`),
+    ),
   );
 
   const [destination, weather, airport] = results.map((result, index) => {
