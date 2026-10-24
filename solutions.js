@@ -3,7 +3,7 @@
 // Config
 const BASE_URL = 'http://localhost:3333';
 const RESOURCES = ['destinations', 'weathers', 'airports'];
-const CITY = 'london'; // Change to "vienna" to test partial data
+const QUERY = 'london'; // Change to "vienna" to test partial data
 
 const fetchJson = async url => {
   const response = await fetch(url);
@@ -41,7 +41,7 @@ const getDashboardData = async query => {
 // Run
 const main = async () => {
   try {
-    const data = await getDashboardData(CITY);
+    const data = await getDashboardData(QUERY);
 
     // console.log('Dashboard data:', data); // Debug
 
